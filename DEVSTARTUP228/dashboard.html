@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord</title>
+    <link rel="stylesheet" href="stylesdashboard.css">
+    <script>
+        // Exemple de taux de conversion en USD
+        const cryptoRates = {
+            bitcoin: 30000, // 1 Bitcoin = 30,000 USD
+            ethereum: 2000, // 1 Ethereum = 2,000 USD
+            litecoin: 100 // 1 Litecoin = 100 USD
+        };
+
+        function updateCryptoValue(formId) {
+            const form = document.getElementById(formId);
+            const cryptoSelect = form.querySelector('select[name="crypto"]');
+            const amountInput = form.querySelector('input[name="amount"]');
+            const valueDisplay = form.querySelector('input[name="crypto-value"]');
+
+            const crypto = cryptoSelect.value;
+            const amount = parseFloat(amountInput.value) || 0;
+            const rate = cryptoRates[crypto];
+
+            if (rate) {
+                const cryptoValue = amount / rate;
+                valueDisplay.value = cryptoValue.toFixed(6); // Affiche la valeur en crypto avec 6 décimales
+            } else {
+                valueDisplay.value = 'N/A';
+            }
+        }
+
+        function setupForm(formId) {
+            const form = document.getElementById(formId);
+            form.addEventListener('input', () => updateCryptoValue(formId));
+            form.querySelector('select[name="crypto"]').addEventListener('change', () => updateCryptoValue(formId));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupForm('buy-form');
+            setupForm('sell-form');
+            setupForm('swap-form');
+        });
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>Devstartup</h1>
+</header>
+
+<div class="button-container">
+    <a href="#basic" class="button active" data-target="basic">Conversion Basique</a>
+    <a href="#pro" class="button" data-target="pro">Conversion Pro</a>
+    <a href="#binance" class="button" data-target="binance">Binance Direct</a>
+    <a href="#latoken" class="button" data-target="latoken">Latoken Direct</a>
+</div>
+
+<div class="layout">
+    <div class="sidebar">
+        <div class="section history">
+            <h2>Historique des Transactions</h2>
+            <ul id="transaction-history">
+                <!-- Les transactions seront ajoutées ici dynamiquement -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="action-sections">
+            <div class="section" id="basic">
+                <h2>Acheter</h2>
+                <form id="buy-form">
+                    <div class="form-group">
+                        <label for="buy-crypto">Choisir la cryptomonnaie :</label>
+                        <select id="buy-crypto" name="crypto">
+                            <option value="bitcoin">Bitcoin</option>
+                            <option value="ethereum">Ethereum</option>
+                            <option value="litecoin">Litecoin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="buy-amount">Montant :</label>
+                        <input type="number" id="buy-amount" name="amount" placeholder="Montant en USD" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="buy-crypto-value">Valeur en Crypto :</label>
+                        <input type="text" id="buy-crypto-value" name="crypto-value" readonly>
+                    </div>
+                    <button type="submit">Acheter</button>
+                </form>
+            </div>
+
+            <div class="section" id="pro">
+                <h2>Vendre</h2>
+                <form id="sell-form">
+                    <div class="form-group">
+                        <label for="sell-crypto">Choisir la cryptomonnaie :</label>
+                        <select id="sell-crypto" name="crypto">
+                            <option value="bitcoin">Bitcoin</option>
+                            <option value="ethereum">Ethereum</option>
+                            <option value="litecoin">Litecoin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell-amount">Montant :</label>
+                        <input type="number" id="sell-amount" name="amount" placeholder="Montant en USD" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sell-crypto-value">Valeur en Crypto :</label>
+                        <input type="text" id="sell-crypto-value" name="crypto-value" readonly>
+                    </div>
+                    <button type="submit">Vendre</button>
+                </form>
+            </div>
+
+            <div class="section" id="binance">
+                <h2>Swapper</h2>
+                <form id="swap-form">
+                    <div class="form-group">
+                        <label for="swap-from">De :</label>
+                        <select id="swap-from" name="from-crypto">
+                            <option value="bitcoin">Bitcoin</option>
+                            <option value="ethereum">Ethereum</option>
+                            <option value="litecoin">Litecoin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="swap-to">Vers :</label>
+                        <select id="swap-to" name="to-crypto">
+                            <option value="bitcoin">Bitcoin</option>
+                            <option value="ethereum">Ethereum</option>
+                            <option value="litecoin">Litecoin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="swap-amount">Montant :</label>
+                        <input type="number" id="swap-amount" name="amount" placeholder="Montant à échanger" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="swap-crypto-value">Valeur en Crypto :</label>
+                        <input type="text" id="swap-crypto-value" name="crypto-value" readonly>
+                    </div>
+                    <button type="submit">Swapper</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="section news">
+            <h2>Actualités</h2>
+            <p>Aucune actualité pour le moment.</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Suivez-nous sur :</p>
+    <a href="https://t.me/yourtelegram">Telegram</a> |
+    <a href="https://twitter.com/yourtwitter">Twitter</a> |
+    <a href="https://wa.me/yourwhatsapp">WhatsApp</a> |
+    <a href="https://facebook.com/yourfacebook">Facebook</a>
+</footer>
+
+</body>
+</html>
